@@ -1,0 +1,101 @@
+一、require
+
+  1.功能：载入文件并执行代码块，对于相同的文件只执行一次
+
+  2.调用：require(“filename”)
+
+  注：寻找文件的路径在package.path中，print(package.path)即可得到。
+
+二、dofile
+
+  1.功能：载入文件并执行代码块，对于相同的文件每次都会执行
+
+  2.调用：dofile("filename")
+
+  3.错误处理：如果代码块中有错误则会引发错误
+
+  4.优点：对简单任务而言，非常便捷
+
+  5.缺点：每次载入文件时都会执行程序块
+
+  6.定位：内置操作，辅助函数
+
+三、loadfile
+
+  1.功能：载入文件但不执行代码块，对于相同的文件每次都会执行。只是编译代码，然后将编译结果作为一个函数返回
+
+  2.调用：loadfile("filename")
+
+  3.错误处理：不引发错误，只返回错误值但不处理错误,即返回nil和错误消息
+
+  4.优点：调用一次之后可以多次调用返回的结果（即函数），即“多次调用”只需编译一次（注：这里的多次调用是指多次调用返回的函数，而不是多次调用loadfile）
+
+　　　　dofile可如下定义：
+
+　　　　　　function dofile(filename)
+
+　　　　　　　　local f = assert(loadfile(filename)) --调用loadfile（的返回结果）并可处理错误
+
+　　　　　　　　return f()
+
+　　　　　　end
+
+　　注：加载了程序块并没有定义其中的函数。在Lua中，函数定义是一种赋值操作，是在运行时才完成的操作。
+
+           例如：一个文件test.lua中有一个函数 function foo(x) print(x) end ,执行如下代码：
+
+　　　　　　　　f = loadfile(test.lua) --加载程序块，此时还没有定义函数foo
+
+　　　　　　　　f() --运行加载的程序块，此时就定义了函数foo, 初学者容易忽略，请务必注意。
+
+                             foo("hello lua") -->hello lua --经过上面的步骤才能调用foo，不能直接拿返回值来调用函数 f()。
+
+四、loadstring
+
+    与loadfile类似，不同的是loadstring是从一个字符串中读取代码，而非从文件中读取，即loadfile的参数是一个文件名，而loadstring的参数是一个字符串，同样返回的是一个函数。
+
+    1.特点：功能强大，但开销大；
+
+    2.典型用处：执行外部代码，如：用户的输入
+
+    3.错误错里：代码中如果有语法错误就会返回nil
+
+    4.理解：f = loadstring("i = i+1")  可理解为（但不完全是）f = function()  i = i+1  end  (注：这里的变量"i"是全局变量，不是指局部变量，如果没有定义全局变量"i",调用f()则会报错！，即loadstring不涉及词法域)
+
+   　　 例如：
+
+   　　 i = 32
+
+   　　 local i = 1
+
+   　　 f = loadstring("i = i+1;print(i)")
+
+    　　g = function() i = i+1;print(i) end 
+
+   　　 f() -->33 --不涉及词法域
+
+    　　g() -->2  --涉及词法域
+
+五、dostring
+
+    类似dofile:加载并运行
+
+六、loadlib(package.loadlib)
+
+　　提供所有Lua中关于动态连接的功能，是一个非常底层的函数
+
+  1.功能：加载指定的库，并将其链接入Lua,不会调用库中的任何函数
+
+  2.调用：f = package.loadlib(path,"functionname"):path动态库的完整路径，functionname函数名
+
+  3.错误处理：返回nil及错误消息
+
+七、load
+
+　　一般很少使用load    
+
+     理解： load是loadfile 和 loadstring的原始函数，接受一个“读取器函数”，并在内部调用它读取程序块，读取器函数可分几次返回一个程序块，load会反复调用它直到返回nil为止。
+
+              load不会引发错误，但程序块中有错误的时候会返回nil及错误消息
+
+     应用： 当程序块不在文件中，或程序块过大而无法载入到内存时才使用load
