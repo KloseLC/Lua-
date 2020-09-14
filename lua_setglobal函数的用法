@@ -1,0 +1,8 @@
+将上一个push的元素，设置为指定第二个参数的value
+
+比如
+
+lua_setglobal（lua_states* L,"global_varibal"）
+
+
+将上一个值，设置为global_varibal的value
