@@ -1,0 +1,2 @@
+pcall可以获得很详细的异常信息和assert异常捕捉i
+xpcall可以获得堆栈信息和异常捕捉，但堆栈信息，debug.traceback
