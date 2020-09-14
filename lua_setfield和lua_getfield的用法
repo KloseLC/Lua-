@@ -1,0 +1,5 @@
+lua_getfield(L,index,"key")
+在表中指定的index位置处的表中，使用key取出对应的val，并将其入栈
+
+lua_setfield(L,index,"key")
+将栈顶的值，与index指向的表中的key，结成键值对，并出栈最上面的值
