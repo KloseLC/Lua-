@@ -1,0 +1,14 @@
+1 lua_gettable
+先往栈里面push一个value（key），使用lua_gettable，获取一个value，然后弹出key，然后将value放到栈中
+
+lua_tostring(L, -1));
+然后取出值
+
+这是从lua中往C中取table值
+
+
+lua_settable
+先newtable创建一张表，将key和value依次push到栈中，然后settable（L，-3）成功后，弹出key-value
+
+至此，这张表就存在了lua中了
+
