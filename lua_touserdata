@@ -1,0 +1,1 @@
+void *lua_touserdata(lua_State*L,intindex);如果给定索引处的值是一个完整的userdata，函数返回内存块的地址。如果值是一个lightuserdata，那么就返回它表示的指针。否则，返回NULL。
