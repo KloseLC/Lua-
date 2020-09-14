@@ -1,0 +1,3 @@
+rawget是可以避免lua中的元表检查搜索，只搜索初始表功能的搜索函数
+
+rawset是不经过__newindex直接设置k和v的方法
